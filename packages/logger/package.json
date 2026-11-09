@@ -1,0 +1,39 @@
+{
+	"name": "@better-fetch/logger",
+	"version": "1.3.3",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/better-auth/better-fetch.git",
+		"directory": "packages/logger"
+	},
+	"type": "module",
+	"description": "",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"scripts": {
+		"bump": "bumpp",
+		"build": "tsdown",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"consola": "^3.2.3"
+	},
+	"peerDependencies": {
+		"@better-fetch/fetch": "workspace:^"
+	},
+	"devDependencies": {
+		"@better-fetch/fetch": "workspace:*",
+		"tsx": "^4.16.2",
+		"typescript": "^6.0.3",
+		"vitest": "^1.5.0"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"files": ["dist"]
+}

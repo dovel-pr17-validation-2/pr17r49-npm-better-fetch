@@ -1,0 +1,9 @@
+packages:
+  - 'packages/*'
+  - 'doc'
+  - "dev"
+allowBuilds:
+  '@biomejs/biome': false
+  es5-ext: false
+  esbuild: true
+  lefthook: true

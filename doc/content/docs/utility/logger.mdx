@@ -1,0 +1,105 @@
+---
+title: Logger
+description: Logger
+---
+
+The logger plugin logs information on request, error or success and on retry.
+
+```package-install
+npm i @better-fetch/logger
+```
+
+## Usage
+
+```ts twoslash title="fetch.ts"
+import { createFetch } from "@better-fetch/fetch";
+import { logger } from "@better-fetch/logger";
+
+const $fetch = createFetch({
+    baseURL: "http://localhost:3000",
+    plugins: [
+        logger(),
+    ],
+});
+```
+
+## Options
+
+### `enabled`
+
+Enable or disable the logger.
+
+```ts title="fetch.ts"
+import { createFetch } from "@better-fetch/fetch";
+import { logger } from "@better-fetch/logger";
+
+const $fetch = createFetch({
+    baseURL: "http://localhost:3000",
+    plugins: [
+        logger({
+            enabled: process.env.NODE_ENV === "development",
+        }),
+    ],
+});
+```
+
+### `console`
+
+By default the logger plugin uses the <Link href="https://github.com/nuxt/consola" target="_blank">consola</Link> package to log the requests and responses. You can pass a custom console object to the logger plugin to use a different logger.
+
+```ts title="fetch.ts"
+import { createFetch } from "@better-fetch/fetch";
+import { logger } from "@better-fetch/logger";
+
+const $fetch = createFetch({
+    baseURL: "http://localhost:3000",
+    plugins: [
+        logger({
+            console: {
+                log: (...args) => console.log(...args),
+                error: (...args) => console.error(...args),
+                warn: (...args) => console.warn(...args),
+            },
+        }),
+    ],
+});
+```
+
+### `logFormat`
+
+Controls the format of log messages.
+
+- `"default"` — each log line includes the HTTP method, URL, status code, and duration so parallel requests are easy to tell apart.
+- `"legacy"` — the original format from `<= v1.1.x`.
+
+```ts title="fetch.ts"
+import { createFetch } from "@better-fetch/fetch";
+import { logger } from "@better-fetch/logger";
+
+const $fetch = createFetch({
+    baseURL: "http://localhost:3000",
+    plugins: [
+        logger({
+            logFormat: "legacy",
+        }),
+    ],
+});
+```
+
+### `verbose`
+
+Enable or disable verbose mode.
+
+```ts twoslash title="fetch.ts"
+import { createFetch } from "@better-fetch/fetch";
+import { logger } from "@better-fetch/logger";
+
+const $fetch = createFetch({
+    baseURL: "http://localhost:3000",
+    plugins: [
+        logger({
+            verbose: true,
+        }),
+    ],
+});
+```

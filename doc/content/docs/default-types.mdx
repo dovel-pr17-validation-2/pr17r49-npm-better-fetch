@@ -1,0 +1,85 @@
+---
+title: Default Types
+description: Default Types
+---
+
+
+## Default Output
+
+By default, the response data will always be of type `unknown`. If you want to customize the default type you can pass the `defaultOutput` option to the `createFetch` function.
+Note: When you supply a custom output schema using a Standard Schema validator (for example, zod or any alternative),
+the provided output schema will override the `defaultOutput` type. This approach offers a strongly typed solution without locking you to a single library.
+
+<Callout type="info">
+This only serves as a type for the response data it's not used as a validation schema.
+</Callout>
+
+```ts twoslash title="fetch.ts"
+import { createFetch } from "@better-fetch/fetch";
+// Example using zod (or any Standard Schema compliant library)
+import { z } from "zod"; 
+
+const $fetch = createFetch({
+    baseURL: "https://jsonplaceholder.typicode.com",
+    defaultOutput: z.any(),
+})
+
+const { data, error } = await $fetch("/todos/1")
+
+// @annotate: Hover over the data object to see the type
+```
+
+If you define output schema, the default output type will be ignored.
+
+```ts twoslash title="fetch.ts"
+import { createFetch } from "@better-fetch/fetch";
+import { z } from "zod";
+
+const $fetch = createFetch({
+    baseURL: "https://jsonplaceholder.typicode.com",
+    defaultOutput: z.any(),
+});
+
+const { data, error } = await $fetch("/todos/1", {
+    output: z.object({
+        userId: z.string(),
+        id: z.number(),
+        title: z.string(),
+        completed: z.boolean(),
+    }),
+})
+// @annotate: Hover over the data object to see the type
+```
+
+## Default error
+
+The default error type is:
+```ts
+{ status: number, statusText: string, message?: string }
+```
+
+If you want a custom error type, you can pass a `defaultError` option to the `createFetch` function.
+Remember: Your custom error type builds on top of the default properties, and if your API returns a JSON error,
+// it will be merged with your definition.
+
+<Callout type="info">
+The `status` and `statusText` properties are always defined. Your custom error definitions are only
+inferred if the API returns a JSON error object.
+</Callout>
+
+```ts twoslash title="fetch.ts"
+import { createFetch } from "@better-fetch/fetch";
+import { z } from "zod"; // Example only
+
+const $fetch = createFetch({
+    baseURL: "https://jsonplaceholder.typicode.com",
+    defaultError: z.object({
+        message: z.string().optional(),
+        error: z.string(),
+    }),
+})
+
+const { data, error } = await $fetch("/todos/1")
+// @annotate: Hover over the error object to see the type
+```
+
